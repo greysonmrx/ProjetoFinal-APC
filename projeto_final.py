@@ -64,7 +64,7 @@ def checkTopToBottom(matrix, word):
       if count == len(word):
         return positions
 
-# Verifica se a palavra está na vertical de cima para baixo
+# Verifica se a palavra está na vertical de baixo para cima
 def checkBottomToTop(matrix, word):
   width, height = len(matrix[0]), len(matrix)
 
