@@ -11,8 +11,11 @@ file = [
   ['j', 'j', 'n', 'f', 'a', 'v', 'a', 's', 'o', 'a'],
 ]
 
-# Verifica se a palavra está na horizontal da esquerda para a direita
-def checkLeftToRight(matrix, word):
+# Verifica se a palavra está na horizontal
+def checkWordHorizontally(matrix, word, reverse = False):
+  if reverse:
+    word = word[::-1]
+
   for i in range(len(matrix)):
     count = 0
     positions = []
@@ -29,27 +32,12 @@ def checkLeftToRight(matrix, word):
       if count == len(word):
         return positions
 
-# Verifica se a palavra está na horizontal da direita para a esquerda 
-def checkRightToLeft(matrix, word):
-  for i in range(len(matrix) - 1, -1, -1):
-    count = 0
-    positions = []
-
-    for j in range(len(matrix[i]) - 1, -1, -1):
-      if matrix[i][j] != word[count]:
-        count = 0
-        positions = []
-      
-      if matrix[i][j] == word[count]:
-        positions.append([i, j, word[count]])
-        count += 1
-
-      if count == len(word):
-        return positions
-
-# Verifica se a palavra está na vertical de cima para baixo
-def checkTopToBottom(matrix, word):
+# Verifica se a palavra está na vertical
+def checkWordVertically(matrix, word, reverse = False):
   width, height = len(matrix[0]), len(matrix)
+
+  if reverse:
+    word = word[::-1]
 
   for i in range(width):
     count = 0
@@ -67,29 +55,12 @@ def checkTopToBottom(matrix, word):
       if count == len(word):
         return positions
 
-# Verifica se a palavra está na vertical de baixo para cima
-def checkBottomToTop(matrix, word):
+# Verifica se a palavra está nas diagonais em direção à diagonal secundária
+def checkWordDiagonallyTowardsTheSecondaryDiagonal(matrix, word, reverse = False):
   width, height = len(matrix[0]), len(matrix)
 
-  for i in range(width - 1, -1, -1):
-    count = 0
-    positions = []
-
-    for j in range(height - 1, -1, -1):
-      if matrix[j][i] != word[count]:
-        count = 0
-        positions = []
-      
-      if matrix[j][i] == word[count]:
-        positions.append([j, i, word[count]])
-        count += 1
-
-      if count == len(word):
-        return positions
-
-# Verifica se a palavra está na diagonal da esquerda inferior para a direita superior
-def checkBottomLeftToTopRight(matrix, word):
-  width, height = len(matrix[0]), len(matrix)
+  if reverse:
+    word = word[::-1]
 
   for i in range(width + height - 1):
     count = 0
@@ -110,61 +81,18 @@ def checkBottomLeftToTopRight(matrix, word):
         if count == len(word):
           return positions
 
-# Verifica se a palavra está na diagonal da direita superior para a esquerda inferior
-def checkTopRightToBottomLeft(matrix, word):
+# Verifica se a palavra está nas diagonais em direção à diagonal principal
+def checkWordDiagonallyTowardsTheMainDiagonal(matrix, word, reverse = False):
   width, height = len(matrix[0]), len(matrix)
 
-  for i in range(width + height - 2, -1, -1):
-    count = 0
-    positions = []
-
-    for j in range(width - 1, -1 , -1):
-      row = i - j
-
-      if 0 <= row < height:
-        if matrix[row][j] != word[count]:
-          count = 0
-          positions = []
-        
-        if matrix[row][j] == word[count]:
-          positions.append([row, j, word[count]])
-          count += 1
-
-        if count == len(word):
-          return positions
-
-# Verifica se a palavra está na diagonal da direita inferior para a esquerda superior
-def checkBottomRightToTopLeft(matrix, word):
-  width, height = len(matrix[0]), len(matrix)
+  if reverse:
+    word = word[::-1]
 
   for i in range(width + height - 1):
     count = 0
     positions = []
 
     for j in range(width):
-      row = width - i + j - 1
-
-      if 0 <= row < height:
-        if matrix[row][j] != word[count]:
-          count = 0
-          positions = []
-        
-        if matrix[row][j] == word[count]:
-          positions.append([row, j, word[count]])
-          count += 1
-
-        if count == len(word):
-          return positions
-
-# Verifica se a palavra está na diagonal da esquerda superior para a direita inferior
-def checkTopLeftToBottomRight(matrix, word):
-  width, height = len(matrix[0]), len(matrix)
-
-  for i in range(width + height - 2, -1, -1):
-    count = 0
-    positions = []
-
-    for j in range(width - 1, -1 , -1):
       row = width - i + j - 1
 
       if 0 <= row < height:
@@ -194,19 +122,19 @@ def generateFinalMatrix(matrix, words_coords):
   return finalMatrix
 
 positions = [
-  checkTopToBottom(file, 'opa'),
-  checkTopToBottom(file, 'int'),
-  checkLeftToRight(file, 'python'),
-  checkLeftToRight(file, 'morcego'),
-  checkRightToLeft(file, 'cavalo'),
-  checkRightToLeft(file, 'java'),
-  checkRightToLeft(file, 'if'),
-  checkBottomToTop(file, 'aviao'),
-  checkBottomToTop(file, 'json'),
-  checkBottomLeftToTopRight(file, 'brabo'),
-  checkTopRightToBottomLeft(file, 'ovo'),
-  checkBottomRightToTopLeft(file, 'ava'),
-  checkTopLeftToBottomRight(file, 'odo'),
+  checkWordHorizontally(file, 'python'),
+  checkWordHorizontally(file, 'morcego'),
+  checkWordHorizontally(file, 'cavalo', reverse = True),
+  checkWordHorizontally(file, 'java', reverse = True),
+  checkWordHorizontally(file, 'if', reverse = True),
+  checkWordVertically(file, 'opa'),
+  checkWordVertically(file, 'int'),
+  checkWordVertically(file, 'aviao', reverse = True),
+  checkWordVertically(file, 'json', reverse = True),
+  checkWordDiagonallyTowardsTheSecondaryDiagonal(file, 'brabo'),
+  checkWordDiagonallyTowardsTheSecondaryDiagonal(file, 'ovo', reverse = True),
+  checkWordDiagonallyTowardsTheMainDiagonal(file, 'ava'),
+  checkWordDiagonallyTowardsTheMainDiagonal(file, 'odo', reverse = True),
 ]
 
 board = generateFinalMatrix(file, positions)
