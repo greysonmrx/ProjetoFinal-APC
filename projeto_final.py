@@ -96,13 +96,15 @@ def checkBottomLeftToTopRight(matrix, word):
     positions = []
 
     for j in range(width):
-      if 0 <= i - j < height:
-        if matrix[i - j][j] != word[count]:
+      row = i - j
+
+      if 0 <= row < height:
+        if matrix[row][j] != word[count]:
           count = 0
           positions = []
         
-        if matrix[i - j][j] == word[count]:
-          positions.append([i - j, j, word[count]])
+        if matrix[row][j] == word[count]:
+          positions.append([row, j, word[count]])
           count += 1
 
         if count == len(word):
@@ -117,13 +119,15 @@ def checkTopRightToBottomLeft(matrix, word):
     positions = []
 
     for j in range(width - 1, -1 , -1):
-      if 0 <= i - j < height:
-        if matrix[i - j][j] != word[count]:
+      row = i - j
+
+      if 0 <= row < height:
+        if matrix[row][j] != word[count]:
           count = 0
           positions = []
         
-        if matrix[i - j][j] == word[count]:
-          positions.append([i - j, j, word[count]])
+        if matrix[row][j] == word[count]:
+          positions.append([row, j, word[count]])
           count += 1
 
         if count == len(word):
@@ -138,13 +142,15 @@ def checkBottomRightToTopLeft(matrix, word):
     positions = []
 
     for j in range(width):
-      if 0 <= width - i + j - 1 < height:
-        if matrix[width - i + j - 1][j] != word[count]:
+      row = width - i + j - 1
+
+      if 0 <= row < height:
+        if matrix[row][j] != word[count]:
           count = 0
           positions = []
         
-        if matrix[width - i + j - 1][j] == word[count]:
-          positions.append([width - i + j - 1, j, word[count]])
+        if matrix[row][j] == word[count]:
+          positions.append([row, j, word[count]])
           count += 1
 
         if count == len(word):
@@ -159,13 +165,15 @@ def checkTopLeftToBottomRight(matrix, word):
     positions = []
 
     for j in range(width - 1, -1 , -1):
-      if 0 <= width - i + j - 1 < height:
-        if matrix[width - i + j - 1][j] != word[count]:
+      row = width - i + j - 1
+
+      if 0 <= row < height:
+        if matrix[row][j] != word[count]:
           count = 0
           positions = []
         
-        if matrix[width - i + j - 1][j] == word[count]:
-          positions.append([width - i + j - 1, j, word[count]])
+        if matrix[row][j] == word[count]:
+          positions.append([row, j, word[count]])
           count += 1
 
         if count == len(word):
