@@ -1,14 +1,14 @@
 file = [
-  ['o', 'n', 'e', 'd', 'j', 'n', 's', 'e', 'f', 'i'],
-  ['p', 't', 'p', 'y', 't', 'h', 'o', 'n', 'd', 'n'],
-  ['a', 'j', 'j', 'k', 'a', 'v', 'a', 'j', 'h', 't'],
-  ['g', 's', 'm', 'j', 'a', 'v', 'a', 'a', 'v', 'j'],
-  ['c', 'w', 'j', 'h', 'a', 'v', 'a', 's', 'x', 'f'],
-  ['a', 'd', 'v', 'g', 'a', 'v', 'a', 'v', 'c', 'o'],
-  ['r', 'a', 'm', 'o', 'r', 'c', 'e', 'g', 'o', 'a'],
-  ['r', 'd', 's', 'a', 'a', 'v', 'a', 'j', 'v', 'i'],
-  ['o', 'g', 'o', 'l', 'a', 'v', 'a', 'c', 'l', 'v'],
-  ['a', 'j', 'n', 'f', 'a', 'v', 'a', 's', 'o', 'a'],
+  ['o', 'n', 'e', 'd', 'j', 'n', 'f', 'o', 'f', 'i'],
+  ['p', 'p', 'p', 'y', 't', 'h', 'o', 'n', 'd', 'n'],
+  ['a', 'j', 'h', 'k', 'a', 'v', 'a', 'j', 'h', 't'],
+  ['a', 's', 'm', 'a', 'o', 'v', 'a', 'o', 'v', 'j'],
+  ['c', 'a', 'j', 'o', 't', 'v', 'b', 's', 'x', 'f'],
+  ['n', 'd', 'a', 'g', 'a', 'a', 'a', 'v', 'c', 'o'],
+  ['o', 'm', 'm', 'o', 'r', 'c', 'e', 'g', 'o', 'a'],
+  ['s', 'd', 's', 'b', 'a', 'v', 'a', 'j', 'j', 'i'],
+  ['j', 'g', 'o', 'l', 'a', 'v', 'a', 'c', 'l', 'v'],
+  ['j', 'j', 'n', 'f', 'a', 'v', 'a', 's', 'o', 'a'],
 ]
 
 # Verifica se a palavra está na horizontal da esquerda para a direita
@@ -18,12 +18,13 @@ def checkLeftToRight(matrix, word):
     positions = []
 
     for j in range(len(matrix[i])):
+      if matrix[i][j] != word[count]:
+        count = 0
+        positions = []
+      
       if matrix[i][j] == word[count]:
         positions.append([i, j, word[count]])
         count += 1
-      elif count > 0 and count != len(word):
-        count = 0
-        positions = []
 
       if count == len(word):
         return positions
@@ -35,12 +36,13 @@ def checkRightToLeft(matrix, word):
     positions = []
 
     for j in range(len(matrix[i]) - 1, -1, -1):
+      if matrix[i][j] != word[count]:
+        count = 0
+        positions = []
+      
       if matrix[i][j] == word[count]:
         positions.append([i, j, word[count]])
         count += 1
-      elif count > 0 and count != len(word):
-        count = 0
-        positions = []
 
       if count == len(word):
         return positions
@@ -54,12 +56,13 @@ def checkTopToBottom(matrix, word):
     positions = []
 
     for j in range(height):
+      if matrix[j][i] != word[count]:
+        count = 0
+        positions = []
+      
       if matrix[j][i] == word[count]:
         positions.append([j, i, word[count]])
         count += 1
-      elif count > 0 and count != len(word):
-        count = 0
-        positions = []
 
       if count == len(word):
         return positions
@@ -73,16 +76,17 @@ def checkBottomToTop(matrix, word):
     positions = []
 
     for j in range(height - 1, -1, -1):
+      if matrix[j][i] != word[count]:
+        count = 0
+        positions = []
+      
       if matrix[j][i] == word[count]:
         positions.append([j, i, word[count]])
         count += 1
-      elif count > 0 and count != len(word):
-        count = 0
-        positions = []
 
       if count == len(word):
         return positions
-    
+
 # Gera a matriz com as palavras encontradas
 def generateFinalMatrix(matrix, words_coords): 
   width, height = len(matrix[0]), len(matrix)
@@ -105,12 +109,13 @@ positions = [
   checkRightToLeft(file, 'cavalo'),
   checkRightToLeft(file, 'java'),
   checkRightToLeft(file, 'if'),
-  checkBottomToTop(file, 'aviao')
+  checkBottomToTop(file, 'aviao'),
+  checkBottomToTop(file, 'json')
 ]
 
 board = generateFinalMatrix(file, positions)
 
 for line in board:
   for column in line:
-    print(column, end="")
+    print(column, end=" ")
   print()
