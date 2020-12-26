@@ -87,6 +87,27 @@ def checkBottomToTop(matrix, word):
       if count == len(word):
         return positions
 
+# Verifica se a palavra está na diagonal da esquerda inferior para a direita superior
+def checkBottomLeftToTopRight(matrix, word):
+  width, height = len(matrix[0]), len(matrix)
+
+  for i in range(width + height - 1):
+    count = 0
+    positions = []
+
+    for j in range(width):
+      if 0 <= i - j < height:
+        if matrix[i - j][j] != word[count]:
+          count = 0
+          positions = []
+        
+        if matrix[i - j][j] == word[count]:
+          positions.append([i - j, j, word[count]])
+          count += 1
+
+        if count == len(word):
+          return positions
+
 # Gera a matriz com as palavras encontradas
 def generateFinalMatrix(matrix, words_coords): 
   width, height = len(matrix[0]), len(matrix)
@@ -110,7 +131,8 @@ positions = [
   checkRightToLeft(file, 'java'),
   checkRightToLeft(file, 'if'),
   checkBottomToTop(file, 'aviao'),
-  checkBottomToTop(file, 'json')
+  checkBottomToTop(file, 'json'),
+  checkBottomLeftToTopRight(file, 'brabo'),
 ]
 
 board = generateFinalMatrix(file, positions)
