@@ -1,15 +1,31 @@
-file = [
-  ['o', 'n', 'e', 'd', 'j', 'n', 'f', 'o', 'f', 'i'],
-  ['p', 'p', 'p', 'y', 't', 'h', 'o', 'n', 'd', 'n'],
-  ['a', 'j', 'h', 'k', 'a', 'v', 'a', 'j', 'h', 't'],
-  ['a', 's', 'm', 'a', 'o', 'v', 'a', 'o', 'v', 'j'],
-  ['c', 'a', 'j', 'o', 't', 'v', 'b', 's', 'x', 'f'],
-  ['n', 'd', 'a', 'g', 'a', 'a', 'a', 'v', 'c', 'o'],
-  ['o', 'm', 'm', 'o', 'r', 'c', 'e', 'g', 'o', 'a'],
-  ['s', 'd', 's', 'b', 'a', 'v', 'a', 'j', 'j', 'i'],
-  ['j', 'g', 'o', 'l', 'a', 'v', 'a', 'c', 'l', 'v'],
-  ['j', 'j', 'n', 'f', 'a', 'v', 'a', 's', 'o', 'a'],
-]
+# Pega as palavras de um arquivo
+def getWords(file):
+  file = open(file, 'r')
+  words = []
+  canReadWords = False
+
+  for line in file:
+    if line[0].isdigit():
+      canReadWords = True
+    else:
+      if canReadWords:
+        words.append(line.split()[0])
+  
+  return words
+
+# Pega a matriz de um arquivo
+def getMatrix(file):
+  file = open(file, 'r')
+  matrix = []
+  canReadWords = False
+
+  for line in file:
+    if line[0].isdigit():
+      break
+    else:
+      matrix.append(line.split())
+
+  return matrix
 
 # Verifica se a palavra está na horizontal
 def checkWordHorizontally(matrix, word, reverse = False):
@@ -31,6 +47,8 @@ def checkWordHorizontally(matrix, word, reverse = False):
 
       if count == len(word):
         return positions
+  
+  return False
 
 # Verifica se a palavra está na vertical
 def checkWordVertically(matrix, word, reverse = False):
@@ -54,6 +72,8 @@ def checkWordVertically(matrix, word, reverse = False):
 
       if count == len(word):
         return positions
+  
+  return False
 
 # Verifica se a palavra está nas diagonais em direção à diagonal secundária
 def checkWordDiagonallyTowardsTheSecondaryDiagonal(matrix, word, reverse = False):
@@ -80,6 +100,8 @@ def checkWordDiagonallyTowardsTheSecondaryDiagonal(matrix, word, reverse = False
 
         if count == len(word):
           return positions
+    
+  return False
 
 # Verifica se a palavra está nas diagonais em direção à diagonal principal
 def checkWordDiagonallyTowardsTheMainDiagonal(matrix, word, reverse = False):
@@ -106,6 +128,27 @@ def checkWordDiagonallyTowardsTheMainDiagonal(matrix, word, reverse = False):
 
         if count == len(word):
           return positions
+    
+  return False
+
+# Procura uma palavra em todas as direções na matriz
+def getWordPosition(matrix, word):
+  for i in range(2):
+    horizontalPositions = checkWordHorizontally(matrix, word, i == 1)
+    verticalPositions = checkWordVertically(matrix, word, i == 1)
+    secondaryDiagonalPositions = checkWordDiagonallyTowardsTheSecondaryDiagonal(matrix, word, i == 1)
+    mainDiagonalPositions = checkWordDiagonallyTowardsTheMainDiagonal(matrix, word, i == 1)
+    
+    if horizontalPositions:
+      return horizontalPositions
+    elif verticalPositions:
+      return verticalPositions
+    elif secondaryDiagonalPositions:
+      return secondaryDiagonalPositions
+    elif mainDiagonalPositions:
+      return mainDiagonalPositions
+  
+  return False
 
 # Gera a matriz com as palavras encontradas
 def generateFinalMatrix(matrix, words_coords): 
@@ -121,25 +164,37 @@ def generateFinalMatrix(matrix, words_coords):
 
   return finalMatrix
 
-positions = [
-  checkWordHorizontally(file, 'python'),
-  checkWordHorizontally(file, 'morcego'),
-  checkWordHorizontally(file, 'cavalo', reverse = True),
-  checkWordHorizontally(file, 'java', reverse = True),
-  checkWordHorizontally(file, 'if', reverse = True),
-  checkWordVertically(file, 'opa'),
-  checkWordVertically(file, 'int'),
-  checkWordVertically(file, 'aviao', reverse = True),
-  checkWordVertically(file, 'json', reverse = True),
-  checkWordDiagonallyTowardsTheSecondaryDiagonal(file, 'brabo'),
-  checkWordDiagonallyTowardsTheSecondaryDiagonal(file, 'ovo', reverse = True),
-  checkWordDiagonallyTowardsTheMainDiagonal(file, 'ava'),
-  checkWordDiagonallyTowardsTheMainDiagonal(file, 'odo', reverse = True),
-]
+# Escreve o quadro com as palavras encontradas em um arquivo
+def writeFile(matrix, positions, file_name):
+  file = open(file_name, 'w')
 
-board = generateFinalMatrix(file, positions)
+  board = generateFinalMatrix(matrix, positions)
 
-for line in board:
-  for column in line:
-    print(column, end=" ")
+  for line in board:
+    for column in line:
+      print(column, end=" ")
+      print(column, end=" ", file=file)
+
+    file.write('\n')
+    print()
+
+  file.close()
   print()
+
+def main():
+  files = ['arq1', 'arq2', 'arq3']
+
+  for file in files:
+    words = getWords(file + '.in')
+    matrix = getMatrix(file + '.in')
+    positions = []
+
+    for word in words:
+      wordPosition = getWordPosition(matrix, word)
+
+      if wordPosition:
+        positions.append(wordPosition)
+
+    writeFile(matrix, positions, file + '.res')
+
+main()
